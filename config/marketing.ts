@@ -10,5 +10,9 @@ export const marketingConfig: MarketingConfig = {
       title: 'authentication',
       href: '/auth',
     },
+    {
+      title: 'projects',
+      href: '/projects',
+    },
   ],
 }

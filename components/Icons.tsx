@@ -11,6 +11,7 @@ import {
   LockIcon,
   MoreHorizontal,
   Loader,
+  Table,
 } from 'lucide-react'
 
 export const Icons = {
@@ -26,4 +27,5 @@ export const Icons = {
   lock: LockIcon,
   dots: MoreHorizontal,
   spinner: Loader,
+  table: Table,
 }
