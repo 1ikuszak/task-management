@@ -8,8 +8,8 @@ export default async function page() {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen">
-      <p>home</p>
+    <div className="flex justify-center items-center h-screen">
+      <p>dashboard</p>
     </div>
   )
 }
