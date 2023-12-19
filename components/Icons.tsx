@@ -12,6 +12,10 @@ import {
   MoreHorizontal,
   Loader,
   Table,
+  LayoutList,
+  CheckCircle2,
+  PackagePlus,
+  ChevronLeftIcon,
 } from 'lucide-react'
 
 export const Icons = {
@@ -28,4 +32,8 @@ export const Icons = {
   dots: MoreHorizontal,
   spinner: Loader,
   table: Table,
+  list: LayoutList,
+  check: CheckCircle2,
+  project: PackagePlus,
+  chevron_left: ChevronLeftIcon,
 }

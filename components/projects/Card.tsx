@@ -1,20 +1,7 @@
 'use client'
 
+import React from 'react'
 import { Icons } from '../Icons'
-
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts'
-
-import React, { PureComponent } from 'react'
-
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -27,6 +14,9 @@ import {
 import Link from 'next/link'
 import { FC } from 'react'
 import { ProjectActions } from './ProjectActions'
+import { Badge } from '../ui/badge'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import MilestoneProgress from './MilestoneProgress'
 
 interface ProjectCardProps {
   name: string
@@ -36,6 +26,14 @@ interface ProjectCardProps {
   progress: number
 }
 
+const milestones = [
+  { name: 'Milestone 1', deadline: '2024-09-08', status: true },
+  { name: 'Milestone 2', deadline: '2023-12-21', status: true },
+  { name: 'Milestone 3', deadline: '2024-11-27', status: false },
+  { name: 'Milestone 4', deadline: '2024-09-09', status: false },
+  { name: 'Milestone 5', deadline: '2024-09-24', status: false },
+]
+
 const ProjectCard: FC<ProjectCardProps> = ({
   name,
   milestone,
@@ -43,75 +41,40 @@ const ProjectCard: FC<ProjectCardProps> = ({
   deadline,
   progress,
 }) => {
-  const data = [
-    {
-      name: 'Page A',
-      days: 4000,
-    },
-    {
-      name: 'Page B',
-      days: 3000,
-    },
-    {
-      name: 'Page C',
-      days: 2000,
-    },
-    {
-      name: 'Page D',
-      days: 2780,
-    },
-    {
-      name: 'Page E',
-      days: 0,
-    },
-  ]
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-        <CardTitle className="flex flex-col">
-          <p className="text-sm font-medium text-muted-foreground">{name}</p>
+        <CardTitle className="space-y-1">
+          <Badge variant={'blue'}>{name}</Badge>
           <p className="text-2xl font-semibold">{milestone}</p>
         </CardTitle>
         <Button variant={'outline'} size={'sm'}>
-          Tasks
+          <Icons.list className="w-4 h-4 mr-4 text-muted-foreground" /> Tasks
         </Button>
       </CardHeader>
-      <CardContent>
-        <div className="flex items-center gap-1">
-          <span className="flex w-6 h-6 bg-blue-100 rounded-full" />
-          <span className="flex w-6 h-6 bg-blue-200 rounded-full" />
-          <span className="flex w-6 h-6 bg-blue-300 rounded-full" />
-          <span className="flex w-6 h-6 bg-blue-400 rounded-full" />
-          <span className="flex w-6 h-6 bg-blue-500 rounded-full" />
-        </div>
-        <div className="w-full h-[60px] my-10">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data}>
-              <Line
-                type="monotone"
-                dataKey="days"
-                stroke="#18181B"
-                strokeWidth={2}
-                isAnimationActive={false}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+      <CardContent className="my-[3rem]">
+        <MilestoneProgress milestones={milestones} />
       </CardContent>
-      <CardFooter>
-        <div className="flex items-center justify-between w-full gap-10">
-          {/* <div className="flex flex-col">
-            <div className="font-semibold whitespace-nowrap">58 days left</div>
-            <p className="text-xs text-muted-foreground">24.12.2023</p>
-          </div> */}
-          <div className="flex space-x-4 text-sm text-muted-foreground">
-            <div>
-              <span className="font-bold">58</span> days left
-            </div>
-            <div>{deadline}</div>
-          </div>
-          <ProjectActions project_id={name} />
+      <CardFooter className="justify-between">
+        <div className="flex gap-1">
+          <Avatar className="w-8 h-8">
+            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+          <Avatar className="w-8 h-8">
+            <AvatarImage src="https://github.com/shadc.png" alt="@shadcn" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+          <Avatar className="w-8 h-8">
+            <AvatarImage src="https://github.com/shad.png" alt="@shadcn" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+          <Avatar className="w-8 h-8">
+            <AvatarImage src="https://github.com/sss.png" alt="@shadcn" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
         </div>
+        <ProjectActions project_id={name} />
       </CardFooter>
     </Card>
   )

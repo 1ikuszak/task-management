@@ -31,7 +31,7 @@ export function ProjectActions({ project_id }: ProjectActionsProps) {
           variant="ghost"
           className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
         >
-          <Icons.settings className="w-4 h-4 text-neutral-600" />
+          <Icons.settings className="w-4 h-4 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
