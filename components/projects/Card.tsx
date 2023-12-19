@@ -27,11 +27,41 @@ interface ProjectCardProps {
 }
 
 const milestones = [
-  { name: 'Milestone 1', deadline: '2024-09-08', status: true },
-  { name: 'Milestone 2', deadline: '2023-12-21', status: true },
-  { name: 'Milestone 3', deadline: '2024-11-27', status: false },
-  { name: 'Milestone 4', deadline: '2024-09-09', status: false },
-  { name: 'Milestone 5', deadline: '2024-09-24', status: false },
+  {
+    name: 'Milestone 1',
+    deadline: new Date(),
+    checked: true,
+    index: 1,
+    project_id: 'dassad',
+  },
+  {
+    name: 'Milestone 2',
+    deadline: new Date(),
+    checked: true,
+    index: 2,
+    project_id: 'dassad',
+  },
+  {
+    name: 'Milestone 3',
+    deadline: new Date(),
+    checked: false,
+    index: 3,
+    project_id: 'dassad',
+  },
+  {
+    name: 'Milestone 4',
+    deadline: new Date(),
+    checked: false,
+    index: 4,
+    project_id: 'dassad',
+  },
+  {
+    name: 'Milestone 5',
+    deadline: new Date(),
+    checked: false,
+    index: 5,
+    project_id: 'dassad',
+  },
 ]
 
 const ProjectCard: FC<ProjectCardProps> = ({

@@ -1,10 +1,7 @@
-import { Icons } from '@/components/Icons'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
-import { ProfileForm } from '@/components/projects/ProfileForm'
-import { Button } from '@/components/ui/button'
+import { ProjectForm } from '@/components/projects/ProjectForm'
 import { Separator } from '@/components/ui/separator'
 import readUserSession from '@/lib/actions'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 export default async function page() {
@@ -14,13 +11,13 @@ export default async function page() {
   }
 
   return (
-    <div className="py-10">
+    <div className="my-6">
       <MaxWidthWrapper>
-        <Button variant={'outline'} asChild>
+        {/* <Button variant={'outline'} asChild>
           <Link href={'/projects'}>
             <Icons.chevron_left className="w-4 h-4 mr-2" /> go back
           </Link>
-        </Button>
+        </Button> */}
         <div className="mt-6 space-y-6">
           <div>
             <h3 className="text-lg font-medium">New Project</h3>
@@ -29,7 +26,7 @@ export default async function page() {
             </p>
           </div>
           <Separator />
-          <ProfileForm />
+          <ProjectForm />
         </div>
       </MaxWidthWrapper>
     </div>

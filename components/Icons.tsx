@@ -16,6 +16,12 @@ import {
   CheckCircle2,
   PackagePlus,
   ChevronLeftIcon,
+  BadgePlus,
+  Milestone,
+  Trash2,
+  Users,
+  Tent,
+  Paintbrush2,
 } from 'lucide-react'
 
 export const Icons = {
@@ -36,4 +42,9 @@ export const Icons = {
   check: CheckCircle2,
   project: PackagePlus,
   chevron_left: ChevronLeftIcon,
+  add_milestone: BadgePlus,
+  milestone: Milestone,
+  team: Users,
+  trash: Trash2,
+  colors: Paintbrush2,
 }

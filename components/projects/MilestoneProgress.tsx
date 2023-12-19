@@ -15,7 +15,14 @@ interface MilestoneProgressProps {
 
 const MilestoneProgress: FC<MilestoneProgressProps> = ({ milestones }) => {
   // Find the last completed milestone
-  const lastCompletedIndex = milestones.map((m) => m.status).lastIndexOf(true)
+  const lastCompletedIndex: number = milestones
+    .map((m) => m.checked)
+    .lastIndexOf(true)
+
+  // Function to format the date
+  const formatDate = (date: Date | undefined) => {
+    return date?.toLocaleDateString()
+  }
 
   return (
     <ol className="items-center w-full sm:flex">
@@ -23,7 +30,7 @@ const MilestoneProgress: FC<MilestoneProgressProps> = ({ milestones }) => {
         <li className="relative w-full mb-6 sm:mb-0" key={milestone.name}>
           {index % 2 !== 0 && (
             <Badge variant={'outline'} className="absolute -top-8">
-              {milestone.deadline}
+              {formatDate(milestone.deadline)}
             </Badge>
           )}
           <div className="flex items-center overflow-hidden">
@@ -46,13 +53,17 @@ const MilestoneProgress: FC<MilestoneProgressProps> = ({ milestones }) => {
             </TooltipProvider>
 
             {index !== milestones.length - 1 && ( // Do not render the line for the last milestone
-              <span className="hidden w-full h-1 mx-2 bg-blue-100 rounded-full sm:flex" />
+              <span
+                className={`hidden w-full h-1 mx-2 rounded-full sm:flex ${
+                  index < lastCompletedIndex ? 'bg-blue-600' : 'bg-blue-100'
+                }`}
+              />
             )}
           </div>
           <div className="mt-3 sm:pr-8">
             {index % 2 === 0 && (
               <Badge variant={'outline'} className="absolute -bottom-8">
-                {milestone.deadline}
+                {formatDate(milestone.deadline)}
               </Badge>
             )}
           </div>
