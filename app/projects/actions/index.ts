@@ -36,6 +36,44 @@ export async function readProjects() {
   return await supabase.from('projects').select('*')
 }
 
+export async function readProjectMilestones(project_id: string) {
+  noStore()
+  const supabase = await createSupabaseClient()
+  return await supabase
+    .from('milestones')
+    .select('*')
+    .eq('project_id', project_id)
+}
+
+export async function readProjectsAndMilestones() {
+  noStore()
+  const supabase = await createSupabaseClient()
+
+  const [projectsResponse, milestonesResponse] = await Promise.all([
+    supabase.from('projects').select('*'),
+    supabase.from('milestones').select('*').order('index'),
+  ])
+
+  if (projectsResponse.error) {
+    console.error(projectsResponse.error)
+    return []
+  }
+
+  if (milestonesResponse.error) {
+    console.error(milestonesResponse.error)
+    return []
+  }
+
+  const combinedData = projectsResponse.data.map((project) => ({
+    ...project,
+    milestones: milestonesResponse.data.filter(
+      (milestone) => milestone.project_id === project.id
+    ),
+  }))
+
+  return combinedData
+}
+
 export async function deleteProjectById(id: string) {
   const supabase = await createSupabaseClient()
 

@@ -45,7 +45,10 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Switch } from '@/components/ui/switch'
 import { useEffect } from 'react'
 import { useTransition } from 'react'
-import { createProject, createProjectMilestonesBulk } from './actions'
+import {
+  createProject,
+  createProjectMilestonesBulk,
+} from '../../app/projects/actions'
 
 const ProjectFormSchema = z.object({
   name: z.string().min(2).max(30),
@@ -448,7 +451,7 @@ export function ProjectForm() {
                                   selected={field.value}
                                   onSelect={field.onChange}
                                   disabled={(date) =>
-                                    date > new Date() ||
+                                    date < new Date() ||
                                     date < new Date('1900-01-01')
                                   }
                                   initialFocus

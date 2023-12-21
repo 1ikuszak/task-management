@@ -22,6 +22,8 @@ import {
   Users,
   Tent,
   Paintbrush2,
+  Play,
+  CalendarCheck2,
 } from 'lucide-react'
 
 export const Icons = {
@@ -47,4 +49,6 @@ export const Icons = {
   team: Users,
   trash: Trash2,
   colors: Paintbrush2,
+  start: Play,
+  calender: CalendarCheck2,
 }

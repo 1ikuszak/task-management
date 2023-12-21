@@ -1,6 +1,11 @@
 import { Icons } from '@/components/Icons'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
-import ProjectCard from '@/components/projects/Card'
+import ProjectCard from '@/components/projects/ProjectCard'
+import {
+  readProjectMilestones,
+  readProjects,
+  readProjectsAndMilestones,
+} from '@/app/projects/actions'
 import { Button } from '@/components/ui/button'
 import readUserSession from '@/lib/actions'
 import Link from 'next/link'
@@ -12,6 +17,11 @@ export default async function page() {
     return redirect('/auth/login')
   }
 
+  const combined = await readProjectsAndMilestones()
+  console.log(JSON.stringify(combined))
+
+  // const { data: milestones } = await readProjectMilestones(projectId)
+
   return (
     <div className="py-10">
       <MaxWidthWrapper>
@@ -21,14 +31,14 @@ export default async function page() {
           </Link>
         </Button>
         <div className="grid gap-2 mt-4 gird-cols-1 lg:grid-cols-2">
-          {Array.from({ length: 1 }, (_, index) => (
+          {combined?.map((project, index) => (
             <ProjectCard
               key={index}
-              created_at="12.12.12"
-              deadline="12.12.13"
-              milestone="wysłka produktu"
-              name="projekt 1"
-              progress={800}
+              created_at={project.created_at}
+              deadline={project.end_date}
+              milestones={project.milestones}
+              name={project.name}
+              project_id={project.id}
             />
           ))}
         </div>
