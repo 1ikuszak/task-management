@@ -45,13 +45,16 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Switch } from '@/components/ui/switch'
 import { useEffect } from 'react'
 import { useTransition } from 'react'
+import { Milestone, Project } from '@/app/data/schema'
 import {
-  createProject,
+  UpdateMilestones,
+  UpdateProject,
   createProjectMilestonesBulk,
-} from '../../app/projects/actions'
+  deleteMilestones,
+} from '@/app/projects/actions'
 
 const ProjectFormSchema = z.object({
-  name: z.string().min(2).max(30),
+  name: z.string().min(1).max(30),
   notes: z.string().max(160),
   start_date: z.date(),
   end_date: z.date(),
@@ -60,35 +63,48 @@ const ProjectFormSchema = z.object({
   milestones: z
     .array(
       z.object({
+        id: z.number().optional(),
         name: z
           .string()
-          .min(2, {
+          .min(1, {
             message: 'Milestone name must be at least 2 characters long.',
           })
-          .max(30, {
+          .max(48, {
             message: 'Milestone name must be no more than 30 characters long.',
           }),
         deadline: z.date().optional(),
         index: z.number(),
         checked: z.boolean(),
+        project_id: z.string(),
       })
     )
     .optional(),
 })
 
-type ProjectFormValues = z.infer<typeof ProjectFormSchema>
-
-// This can come from your database or API.
-const defaultValues: Partial<ProjectFormValues> = {
-  name: '',
-  notes: '',
-  start_date: new Date(),
-  end_date: new Date(),
-  custom_color: false,
-  color: 'default',
+interface ProjectUpdateFormProps {
+  project: Project
+  milestones: Milestone[]
 }
 
-export function ProjectForm() {
+export function ProjectUpdateForm({
+  project,
+  milestones,
+}: ProjectUpdateFormProps) {
+  type ProjectFormValues = z.infer<typeof ProjectFormSchema>
+
+  const defaultValues: Partial<ProjectFormValues> = {
+    name: project.name,
+    notes: project.notes,
+    start_date: project?.start_date ? new Date(project.start_date) : new Date(),
+    end_date: project?.end_date ? new Date(project.end_date) : new Date(),
+    color: project?.color ? project.color : 'default',
+    custom_color: project?.color && project.color !== 'default',
+    milestones: milestones.map((milestone) => ({
+      ...milestone,
+      deadline: milestone.deadline ? new Date(milestone.deadline) : undefined,
+    })),
+  }
+
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(ProjectFormSchema),
     defaultValues,
@@ -113,64 +129,84 @@ export function ProjectForm() {
       deadline: new Date(),
       index: fields.length,
       checked: false,
+      project_id: project.id,
     })
   }
 
   const [isLoading, setIsLoading] = useTransition()
 
+  // update project info
   async function onSubmit(data: ProjectFormValues) {
     setIsLoading(async () => {
-      const projectResponse = await createProject(
-        data.name,
-        data.notes,
-        data.start_date,
-        data.end_date,
-        data.color
-      )
-      const parsedProjectResponse = JSON.parse(projectResponse)
-
-      if (parsedProjectResponse.error) {
-        toast.error(parsedProjectResponse.error.message)
+      const updateProjectResult = await UpdateProject({
+        id: project.id,
+        name: data.name,
+        notes: data.notes,
+        start_date: data.start_date,
+        end_date: data.end_date,
+        color: data.color,
+      })
+      const { updateProjectError } = JSON.parse(updateProjectResult)
+      if (updateProjectError) {
+        toast.error(updateProjectError.message)
         return
       }
 
-      const projectId = parsedProjectResponse.data.id
-
-      // Step 2: Create milestones (if any)
-      if (data.milestones && data.milestones.length > 0) {
-        const milestonesWithProjectId = data.milestones.map((milestone) => ({
-          ...milestone,
-          project_id: projectId,
-          checked: false,
-        }))
-
-        const milestonesResponse = await createProjectMilestonesBulk(
-          milestonesWithProjectId
+      // Handle milestones if they exist
+      if (data.milestones) {
+        // Step 2: Identify and update existing milestones
+        const updatedMilestones = data.milestones.filter(
+          (milestone) => milestone.id
         )
-        const parsedMilestonesResponse = JSON.parse(milestonesResponse)
+        if (updatedMilestones.length > 0) {
+          const updateMilestoneResult =
+            await UpdateMilestones(updatedMilestones)
+          const { updateMilestoneError } = JSON.parse(updateMilestoneResult)
 
-        if (parsedMilestonesResponse.error) {
-          toast.error(parsedMilestonesResponse.error.message)
-          return
+          if (updateMilestoneError) {
+            toast.error(updateMilestoneError.message)
+            return
+          }
+        }
+
+        // Step 3: Identify and add new milestones
+        const newMilestones = data.milestones.filter(
+          (milestone) => !milestone.id
+        )
+        if (newMilestones.length > 0) {
+          const createMilestoneResult = await createProjectMilestonesBulk(
+            newMilestones.map((milestone) => ({
+              ...milestone,
+              project_id: project.id,
+            }))
+          )
+          const { createMilestoneError } = JSON.parse(createMilestoneResult)
+          if (createMilestoneError) {
+            toast.error(createMilestoneError.message)
+            return
+          }
+        }
+
+        // Step 3: Identify and delete removed milestones
+        const currentMilestones = data.milestones || []
+        const deletedMilestoneIds = milestones
+          .filter((m) => !currentMilestones.find((dm) => dm.id === m.id))
+          .map((m) => m.id)
+          .filter((id) => id !== undefined)
+
+        if (deletedMilestoneIds.length > 0) {
+          const deleteMilestoneResult = await deleteMilestones(
+            deletedMilestoneIds as number[]
+          )
+          const { deleteMilestoneError } = JSON.parse(deleteMilestoneResult)
+          if (deleteMilestoneError) {
+            toast.error(deleteMilestoneError.message)
+            return
+          }
         }
       }
 
-      toast('Project added successfully')
-      form.reset({
-        name: '',
-        notes: '',
-        start_date: new Date(),
-        end_date: new Date(),
-        color: 'default',
-        custom_color: false,
-        milestones: [
-          {
-            name: 'First milestone to achieve',
-            deadline: new Date(),
-            index: 0,
-          },
-        ],
-      })
+      toast('project updated successfully')
     })
   }
 
@@ -380,7 +416,7 @@ export function ProjectForm() {
                 {isLoading && (
                   <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
                 )}
-                Create project
+                Update project
               </Button>
             </div>
           </div>

@@ -1579,6 +1579,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4":
+  version: 4.14.202
+  resolution: "@types/lodash@npm:4.14.202"
+  checksum: 6064d43c8f454170841bd67c8266cc9069d9e570a72ca63f06bceb484cb4a3ee60c9c1f305c1b9e3a87826049fd41124b8ef265c4dd08b00f6766609c7fe9973
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*, @types/node@npm:^20":
   version: 20.10.4
   resolution: "@types/node@npm:20.10.4"
@@ -4004,7 +4011,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.19":
+"lodash@npm:^4.17.19, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
@@ -5514,6 +5521,7 @@ __metadata:
     "@radix-ui/react-tooltip": "npm:^1.0.7"
     "@supabase/ssr": "npm:^0.0.10"
     "@supabase/supabase-js": "npm:^2.39.0"
+    "@types/lodash": "npm:^4"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
@@ -5528,6 +5536,7 @@ __metadata:
     eslint-config-next: "npm:14.0.4"
     eslint-config-prettier: "npm:^9.1.0"
     framer-motion: "npm:^10.16.16"
+    lodash: "npm:^4.17.21"
     lucide-react: "npm:^0.298.0"
     next: "npm:14.0.4"
     postcss: "npm:^8"

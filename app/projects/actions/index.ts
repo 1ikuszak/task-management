@@ -1,6 +1,6 @@
 'use server'
 
-import { Milestone } from '@/app/data/schema'
+import { Milestone, Project } from '@/app/data/schema'
 import createSupabaseClient from '@/lib/supabase/server'
 import { revalidatePath, unstable_noStore as noStore } from 'next/cache'
 
@@ -74,6 +74,63 @@ export async function readProjectsAndMilestones() {
   return combinedData
 }
 
+export async function readProjectWithMilestonesById(project_id: string) {
+  const supabase = await createSupabaseClient()
+
+  const [projectsResponse, milestonesResponse] = await Promise.all([
+    supabase
+      .from('projects')
+      .select('id, name, notes, color, start_date, end_date')
+      .eq('id', project_id)
+      .single(),
+    supabase
+      .from('milestones')
+      .select('id, name, deadline, index, checked, project_id')
+      .eq('project_id', project_id)
+      .order('index'),
+  ])
+
+  if (projectsResponse.error || milestonesResponse.error) {
+    throw new Error('Error fetching project or milestones')
+  }
+
+  return {
+    project: projectsResponse.data,
+    milestones: milestonesResponse.data,
+  }
+}
+
+export async function UpdateProject(project: Project) {
+  const supabase = await createSupabaseClient()
+  const result = await supabase
+    .from('projects')
+    .update(project)
+    .eq('id', project.id)
+
+  revalidatePath('/projects')
+  return JSON.stringify({ result })
+}
+
+export async function UpdateMilestones(milestones: Milestone[]) {
+  const supabase = await createSupabaseClient()
+  const result = await supabase
+    .from('milestones')
+    .upsert(milestones)
+    .eq('project_id', milestones[0].project_id)
+
+  return JSON.stringify({ result })
+}
+
+export async function deleteMilestones(milestoneIds: number[]) {
+  const supabase = await createSupabaseClient()
+  const result = await supabase
+    .from('milestones')
+    .delete()
+    .in('id', milestoneIds)
+
+  return JSON.stringify({ result })
+}
+
 export async function deleteProjectById(id: string) {
   const supabase = await createSupabaseClient()
 
@@ -94,10 +151,4 @@ export async function deleteProjectById(id: string) {
     console.error('Error deleting project data:', error)
     throw error // rethrow the error if you want to handle it further up the call stack
   }
-}
-
-export async function updateProjectById(id: string, completed: boolean) {
-  const supabase = await createSupabaseClient()
-  await supabase.from('tasks').update({ completed }).eq('id', id)
-  revalidatePath('/tasks')
 }

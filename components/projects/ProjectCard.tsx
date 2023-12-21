@@ -71,7 +71,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
               <Icons.milestone className="absolute w-3.5 h-3.5 top-1 right-1 text-muted-foreground" />
               <CardContent className="pb-1">
                 <span>
-                  <span className="text-xl font-bold">
+                  <span className="text-xl font-semibold">
                     +{daysToNextMilestone}
                   </span>
                   <span className="text-xs font-semibold text-muted-foreground">
@@ -88,7 +88,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
               <Icons.calender className="absolute w-3.5 h-3.5 top-1 right-1 text-muted-foreground" />
               <CardContent className="pb-1">
                 <span>
-                  <span className="text-xl font-bold">
+                  <span className="text-xl font-semibold">
                     +{daysToLastMilestone}
                   </span>
                   <span className="text-xs font-semibold text-muted-foreground">

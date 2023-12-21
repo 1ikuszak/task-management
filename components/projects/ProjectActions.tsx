@@ -19,6 +19,7 @@ import createSupabaseClient from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { toast } from 'sonner'
 import { deleteProjectById } from '../../app/projects/actions'
+import { useRouter } from 'next/navigation'
 
 interface ProjectActionsProps {
   project_id: string
@@ -26,6 +27,7 @@ interface ProjectActionsProps {
 
 export function ProjectActions({ project_id }: ProjectActionsProps) {
   const deleteProject = async () => {
+    console.log(project_id)
     const result = await deleteProjectById(project_id)
     const { error } = JSON.parse(result)
 
@@ -34,6 +36,11 @@ export function ProjectActions({ project_id }: ProjectActionsProps) {
     } else {
       toast('project deleted successfully')
     }
+  }
+
+  const router = useRouter()
+  const redirectToUpdate = () => {
+    router.push(`/projects/${project_id}/update`)
   }
   return (
     <DropdownMenu>
@@ -46,7 +53,7 @@ export function ProjectActions({ project_id }: ProjectActionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={redirectToUpdate}>Edit</DropdownMenuItem>
         <DropdownMenuItem onClick={deleteProject}>Delete</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
