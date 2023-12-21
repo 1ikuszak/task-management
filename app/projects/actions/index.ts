@@ -118,6 +118,7 @@ export async function UpdateMilestones(milestones: Milestone[]) {
     .upsert(milestones)
     .eq('project_id', milestones[0].project_id)
 
+  revalidatePath('/projects')
   return JSON.stringify({ result })
 }
 
@@ -128,6 +129,7 @@ export async function deleteMilestones(milestoneIds: number[]) {
     .delete()
     .in('id', milestoneIds)
 
+  revalidatePath('/projects')
   return JSON.stringify({ result })
 }
 

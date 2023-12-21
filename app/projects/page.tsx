@@ -34,11 +34,10 @@ export default async function page() {
           {combined?.map((project, index) => (
             <ProjectCard
               key={index}
-              created_at={project.created_at}
-              deadline={project.end_date}
               milestones={project.milestones}
               name={project.name}
               project_id={project.id}
+              color={project.color}
             />
           ))}
         </div>

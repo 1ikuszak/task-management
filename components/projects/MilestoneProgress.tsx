@@ -8,12 +8,16 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { Icons } from '../Icons'
-
+import { ColorKey, colorMap, ColorThemeVariant } from '@/app/data/data' // Adjust the path as needed
 interface MilestoneProgressProps {
   milestones: Milestone[]
+  color: ColorKey
 }
 
-const MilestoneProgress: FC<MilestoneProgressProps> = ({ milestones }) => {
+const MilestoneProgress: FC<MilestoneProgressProps> = ({
+  milestones,
+  color,
+}) => {
   const lastCompletedIndex: number = milestones
     .map((m) => m.checked)
     .lastIndexOf(true)
@@ -23,6 +27,20 @@ const MilestoneProgress: FC<MilestoneProgressProps> = ({ milestones }) => {
       date = new Date(date)
     }
     return date instanceof Date ? date.toLocaleDateString() : 'No Date'
+  }
+
+  // const getColorClass = (variant: keyof ColorTheme) => {
+  //   const colorVariantClasses = colorClasses[color] || colorClasses.blue // Default to blue if color not found
+  //   return colorVariantClasses[variant]
+  // }
+
+  const getColorClass = (
+    color: ColorKey,
+    variant: keyof ColorThemeVariant
+  ): string => {
+    const theme = colorMap[color] || colorMap[ColorKey.default]
+    const themeClass = theme ? theme[variant] : ''
+    return `${themeClass}`
   }
 
   return (
@@ -42,12 +60,24 @@ const MilestoneProgress: FC<MilestoneProgressProps> = ({ milestones }) => {
               <Tooltip>
                 <TooltipTrigger>
                   {milestone.checked && (
-                    <div className="z-10 flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full ring-0 ring-white sm:ring-8 shrink-0">
-                      <Icons.check className="text-blue-600" />
+                    <div
+                      className={`z-10 flex items-center justify-center w-6 h-6 bg-${getColorClass(
+                        color,
+                        'bg'
+                      )} rounded-full ring-0 ring-white sm:ring-8 shrink-0`}
+                    >
+                      <Icons.check
+                        className={`text-${getColorClass(color, 'primary')}`}
+                      />
                     </div>
                   )}
                   {!milestone.checked && (
-                    <div className="z-10 flex items-center justify-center w-5 h-5 bg-blue-100 rounded-full ring-0 ring-white sm:ring-8 shrink-0" />
+                    <div
+                      className={`z-10 flex items-center justify-center w-5 h-5 bg-${getColorClass(
+                        color,
+                        'bg'
+                      )} rounded-full ring-0 ring-white sm:ring-8 shrink-0`}
+                    />
                   )}
                 </TooltipTrigger>
                 <TooltipContent>
@@ -56,11 +86,17 @@ const MilestoneProgress: FC<MilestoneProgressProps> = ({ milestones }) => {
               </Tooltip>
             </TooltipProvider>
 
-            {index !== milestones.length - 1 && ( // Do not render the line for the last milestone
+            {index !== milestones.length - 1 && (
               <span
                 className={`hidden w-full h-1 mx-2 rounded-full sm:flex ${
-                  index < lastCompletedIndex ? 'bg-blue-600' : 'bg-blue-100'
-                } ${index === lastCompletedIndex ? 'bg-blue-400' : ''}`}
+                  index < lastCompletedIndex
+                    ? 'bg-' + getColorClass(color, 'primary')
+                    : getColorClass(color, 'bg')
+                } ${
+                  index === lastCompletedIndex
+                    ? 'bg-' + getColorClass(color, 'secondary')
+                    : 'bg-' + getColorClass(color, 'bg')
+                }`}
               />
             )}
           </div>

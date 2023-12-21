@@ -19,21 +19,20 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import MilestoneProgress from './MilestoneProgress'
 import { Milestone } from '@/app/data/schema'
 import { calculateDaysRemaining } from '@/lib/utils'
+import { ColorKey } from '@/app/data/data'
 
 interface ProjectCardProps {
   name: string
   milestones: Milestone[]
-  created_at: string
-  deadline: string
   project_id: string
+  color: ColorKey
 }
 
 const ProjectCard: FC<ProjectCardProps> = ({
   name,
   milestones,
-  created_at,
-  deadline,
   project_id,
+  color,
 }) => {
   const getCurrentMilestone = () => {
     const lastCheckedIndex = milestones.map((m) => m.checked).lastIndexOf(true)
@@ -46,13 +45,15 @@ const ProjectCard: FC<ProjectCardProps> = ({
     : 0
 
   const lastMilestone = milestones[milestones.length - 1]
-  const daysToLastMilestone = calculateDaysRemaining(lastMilestone.deadline)
+  const daysToLastMilestone = lastMilestone
+    ? calculateDaysRemaining(lastMilestone.deadline)
+    : 0
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <CardTitle className="space-y-1">
-          <Badge variant={'blue'}>{name}</Badge>
+          <Badge variant={`${color}`}>{name}</Badge>
           <p className="text-2xl font-semibold">
             {currentMilestone ? currentMilestone.name : 'No current milestone'}
           </p>
@@ -61,8 +62,8 @@ const ProjectCard: FC<ProjectCardProps> = ({
           <Icons.list className="w-4 h-4 mr-4 text-muted-foreground" /> Tasks
         </Button>
       </CardHeader>
-      <CardContent className="mt-[3rem]">
-        <MilestoneProgress milestones={milestones} />
+      <CardContent className="mt-[2rem]">
+        <MilestoneProgress color={color} milestones={milestones} />
       </CardContent>
       <CardFooter className="justify-between">
         <div className="flex items-center">

@@ -18,7 +18,7 @@ export const projectSchema = z.object({
   color: z.union([
     z.literal('default'),
     z.literal('blue'),
-    z.literal('red'),
+    z.literal('rose'),
     z.literal('green'),
     z.literal('orange'),
     z.undefined(),

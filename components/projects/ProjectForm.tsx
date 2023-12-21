@@ -56,7 +56,7 @@ const ProjectFormSchema = z.object({
   start_date: z.date(),
   end_date: z.date(),
   custom_color: z.boolean(),
-  color: z.enum(['default', 'red', 'blue', 'green', 'orange']),
+  color: z.enum(['default', 'rose', 'blue', 'green', 'orange']),
   milestones: z
     .array(
       z.object({
@@ -336,7 +336,7 @@ export function ProjectForm() {
                         <FormControl>
                           <RadioGroupItem
                             className="border-none text-rose-600 bg-rose-300"
-                            value="red"
+                            value="rose"
                           />
                         </FormControl>
                       </FormItem>
