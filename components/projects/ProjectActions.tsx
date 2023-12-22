@@ -27,7 +27,6 @@ interface ProjectActionsProps {
 
 export function ProjectActions({ project_id }: ProjectActionsProps) {
   const deleteProject = async () => {
-    console.log(project_id)
     const result = await deleteProjectById(project_id)
     const { error } = JSON.parse(result)
 

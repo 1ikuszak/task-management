@@ -11,6 +11,7 @@ export enum ColorKey {
   blue = 'blue',
   green = 'green',
   rose = 'rose',
+  orange = 'orange',
   // Add other keys as needed
 }
 
@@ -40,6 +41,11 @@ export const colorMap: ColorMap = {
     primary: 'theme-default-primary',
     secondary: 'theme-default-secondary',
     bg: 'theme-default-bg',
+  },
+  orange: {
+    primary: 'theme-orange-primary',
+    secondary: 'theme-orange-secondary',
+    bg: 'theme-orange-bg',
   },
   // Add other color mappings...
 }

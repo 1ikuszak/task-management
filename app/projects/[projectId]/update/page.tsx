@@ -23,8 +23,6 @@ export default async function page({
   }
   const projectData = readProjectWithMilestonesById(params.projectId)
   const { project, milestones } = await projectData
-  console.log(project)
-  console.log(milestones)
 
   return (
     <div className="my-6">

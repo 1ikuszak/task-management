@@ -38,6 +38,13 @@ module.exports = {
     'bg-theme-green-bg',
     'text-theme-green-bg',
 
+    'bg-theme-orange-primary',
+    'text-theme-orange-primary',
+    'bg-theme-orange-secondary',
+    'text-theme-orange-secondary',
+    'bg-theme-orange-bg',
+    'text-theme-orange-bg',
+
     // Add other custom classes as needed
   ],
   darkMode: ['class'],

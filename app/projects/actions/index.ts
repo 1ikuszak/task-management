@@ -26,14 +26,13 @@ export async function createProjectMilestonesBulk(milestones: Milestone[]) {
   const result = await supabase.from('milestones').insert(milestones)
 
   revalidatePath('/projects')
-  console.log(result)
   return JSON.stringify(result)
 }
 
 export async function readProjects() {
   noStore()
   const supabase = await createSupabaseClient()
-  return await supabase.from('projects').select('*')
+  return await supabase.from('projects').select('*').order('created_at')
 }
 
 export async function readProjectMilestones(project_id: string) {

@@ -18,9 +18,6 @@ export default async function page() {
   }
 
   const combined = await readProjectsAndMilestones()
-  console.log(JSON.stringify(combined))
-
-  // const { data: milestones } = await readProjectMilestones(projectId)
 
   return (
     <div className="py-10">
@@ -30,7 +27,7 @@ export default async function page() {
             <Icons.project className="mr-2" /> New Project
           </Link>
         </Button>
-        <div className="grid gap-2 mt-4 gird-cols-1 lg:grid-cols-2">
+        <div className="grid gap-4 mt-4 gird-cols-1 lg:grid-cols-2">
           {combined?.map((project, index) => (
             <ProjectCard
               key={index}

@@ -67,10 +67,10 @@ const ProjectCard: FC<ProjectCardProps> = ({
       </CardContent>
       <CardFooter className="justify-between">
         <div className="flex items-center">
-          <div className="flex space-x-2">
-            <Card className="relative">
-              <Icons.milestone className="absolute w-3.5 h-3.5 top-1 right-1 text-muted-foreground" />
-              <CardContent className="pb-1">
+          <div className="flex gap-3">
+            <div>
+              <div className="flex items-center">
+                <Icons.milestone className="w-4 h-4 mr-1 text-muted-foreground" />
                 <span>
                   <span className="text-xl font-semibold">
                     +{daysToNextMilestone}
@@ -80,14 +80,14 @@ const ProjectCard: FC<ProjectCardProps> = ({
                     days
                   </span>
                 </span>
-                <p className="text-xs text-muted-foreground">
-                  to <span className="font-semibold">next</span> milestone
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="relative">
-              <Icons.calender className="absolute w-3.5 h-3.5 top-1 right-1 text-muted-foreground" />
-              <CardContent className="pb-1">
+              </div>
+            </div>
+
+            <span className="h-[24px] w-[2px] bg-slate-300 rounded-full"></span>
+
+            <div>
+              <div className="flex items-center">
+                <Icons.calender className="w-4 h-4 mr-1 text-muted-foreground" />
                 <span>
                   <span className="text-xl font-semibold">
                     +{daysToLastMilestone}
@@ -97,13 +97,10 @@ const ProjectCard: FC<ProjectCardProps> = ({
                     days
                   </span>
                 </span>
-                <p className="text-xs text-muted-foreground">
-                  to project <span className="font-semibold">deadline</span>
-                </p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
-          <div className="flex gap-1 ml-4">
+          <div className="flex gap-1 ml-10">
             <Avatar className="w-8 h-8">
               <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
               <AvatarFallback>CN</AvatarFallback>
