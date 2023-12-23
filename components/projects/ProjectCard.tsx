@@ -58,8 +58,11 @@ const ProjectCard: FC<ProjectCardProps> = ({
             {currentMilestone ? currentMilestone.name : 'No current milestone'}
           </p>
         </CardTitle>
-        <Button variant={'outline'} size={'sm'}>
-          <Icons.list className="w-4 h-4 mr-4 text-muted-foreground" /> Tasks
+        <Button asChild variant={'outline'} size={'sm'}>
+          <Link href={`tasks/${project_id}`}>
+            {' '}
+            <Icons.list className="w-4 h-4 mr-4 text-muted-foreground" /> Tasks
+          </Link>
         </Button>
       </CardHeader>
       <CardContent className="mt-[2rem]">

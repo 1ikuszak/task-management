@@ -120,3 +120,34 @@ export const priorities = [
     icon: ArrowUpIcon,
   },
 ]
+
+export const project_members = [
+  {
+    label: 'All',
+    value: 'All',
+  },
+  {
+    label: 'Jan',
+    value: 'Jan',
+  },
+  {
+    label: 'Marta',
+    value: 'Marta',
+  },
+  {
+    label: 'Maja',
+    value: 'Maja',
+  },
+  {
+    label: 'Mariusz',
+    value: 'Mariusz',
+  },
+  {
+    label: 'Marek',
+    value: 'Marek',
+  },
+  {
+    label: 'Łukasz',
+    value: 'Łukasz',
+  },
+]
