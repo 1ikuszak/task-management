@@ -20,7 +20,7 @@ export default async function TaskPage({
 }) {
   const { data } = await readUserSession()
   if (!data.session) {
-    return redirect('/auth')
+    return redirect('/auth/login')
   }
   const response = await readTasks(params.projectId)
   const tasks = z.array(taskSchema).parse(response.data)
@@ -28,7 +28,9 @@ export default async function TaskPage({
   return (
     <div className="my-10">
       <MaxWidthWrapper>
-        <TaskSheet tasks={tasks} project_id={params.projectId} />
+        <div className="mb-6">
+          <TaskSheet tasks={tasks} project_id={params.projectId} />
+        </div>
         <DataTable data={tasks} columns={columns} />
       </MaxWidthWrapper>
     </div>

@@ -56,50 +56,54 @@ import {
   CheckCircledIcon,
   CircleIcon,
   CrossCircledIcon,
-  QuestionMarkCircledIcon,
   StopwatchIcon,
 } from '@radix-ui/react-icons'
 
-export const labels = [
-  {
-    value: 'bug',
-    label: 'Bug',
-  },
-  {
-    value: 'feature',
-    label: 'Feature',
-  },
-  {
-    value: 'documentation',
-    label: 'Documentation',
-  },
-]
+import {
+  CheckCircle2,
+  XOctagon,
+  CircleDashed,
+  Shield,
+  Loader2,
+  CalendarCheck2,
+} from 'lucide-react'
 
 export const statuses = [
   {
-    value: 'backlog',
-    label: 'Backlog',
-    icon: QuestionMarkCircledIcon,
-  },
-  {
     value: 'todo',
     label: 'Todo',
-    icon: CircleIcon,
+    icon: CircleDashed,
+    variant: 'outline',
   },
   {
-    value: 'in progress',
+    value: 'in_progress',
     label: 'In Progress',
-    icon: StopwatchIcon,
+    icon: Loader2,
+    variant: 'purple',
   },
   {
     value: 'done',
     label: 'Done',
-    icon: CheckCircledIcon,
+    icon: CheckCircle2,
+    variant: 'green',
+  },
+  {
+    value: 'blocked',
+    label: 'Blocked',
+    icon: Shield,
+    variant: 'orange',
   },
   {
     value: 'canceled',
     label: 'Canceled',
-    icon: CrossCircledIcon,
+    icon: XOctagon,
+    variant: 'rose',
+  },
+  {
+    value: 'closed',
+    label: 'Closed',
+    icon: CalendarCheck2,
+    variant: 'blue',
   },
 ]
 
@@ -107,16 +111,19 @@ export const priorities = [
   {
     label: 'Low',
     value: 'low',
+    multiply: 1,
     icon: ArrowDownIcon,
   },
   {
     label: 'Medium',
     value: 'medium',
+    multiply: 2,
     icon: ArrowRightIcon,
   },
   {
     label: 'High',
     value: 'high',
+    multiply: 3,
     icon: ArrowUpIcon,
   },
 ]
@@ -124,30 +131,37 @@ export const priorities = [
 export const project_members = [
   {
     label: 'All',
-    value: 'All',
+    value: 'all',
+    avatar: 'https://github.com/shadcn.png',
   },
   {
     label: 'Jan',
-    value: 'Jan',
+    value: 'jan',
+    avatar: 'https://github.com/shadc.png',
   },
   {
     label: 'Marta',
-    value: 'Marta',
+    value: 'marta',
+    avatar: 'https://github.com/shad.png',
   },
   {
     label: 'Maja',
-    value: 'Maja',
+    value: 'maja',
+    avatar: 'https://github.com/sss.png',
   },
   {
     label: 'Mariusz',
-    value: 'Mariusz',
+    value: 'mariusz',
+    avatar: 'https://github.com/mellow.png',
   },
   {
     label: 'Marek',
-    value: 'Marek',
+    value: 'marek',
+    avatar: 'https://github.com/marshmallow.png',
   },
   {
     label: 'Łukasz',
-    value: 'Łukasz',
+    value: 'łukasz',
+    avatar: 'https://github.com/sss.png',
   },
 ]

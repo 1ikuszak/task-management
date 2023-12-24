@@ -1,29 +1,41 @@
 'use client'
+import * as React from 'react'
 
 import { ColumnDef } from '@tanstack/react-table'
 
-import { Badge } from '@/components/ui/badge'
+import { Badge, BadgeProps } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 
-import { labels, priorities, statuses } from '@/app/data/data'
+import { priorities, project_members, statuses } from '@/app/data/data'
 import { Task } from '@/app/data/schema'
 import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
+import { formatDate } from '@/lib/utils'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { updateStatus } from '@/app/tasks/actions'
+import { toast } from 'sonner'
 
 export const columns: ColumnDef<Task>[] = [
   {
     id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="translate-y-[2px]"
-      />
-    ),
+
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
@@ -35,28 +47,54 @@ export const columns: ColumnDef<Task>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: 'id',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Task" />
-    ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue('id')}</div>,
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   accessorKey: 'id',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Task" />
+  //   ),
+  //   cell: ({ row }) => <div className="w-[80px]">{row.getValue('id')}</div>,
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   {
     accessorKey: 'title',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label)
-
       return (
         <div className="flex space-x-2">
-          {label && <Badge variant="outline">{label.label}</Badge>}
           <span className="max-w-[500px] truncate font-medium">
             {row.getValue('title')}
+          </span>
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: 'notes',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Notes" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <span className="max-w-[100px] truncate font-medium text-xs">
+          {row.getValue('notes')}
+        </span>
+      )
+    },
+  },
+  {
+    accessorKey: 'deadline',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="End Date" />
+    ),
+    cell: ({ row }) => {
+      const endDate = row.getValue('deadline')
+      return (
+        <div className="flex space-x-2">
+          <span className="max-w-[100px] truncate font-medium text-xs">
+            {typeof endDate === 'string' ? formatDate(endDate) : ''}
           </span>
         </div>
       )
@@ -68,27 +106,78 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title="Status" />
     ),
     cell: ({ row }) => {
-      const status = statuses.find(
-        (status) => status.value === row.getValue('status')
+      const [status, setStatus] = React.useState(
+        statuses.find((status) => status.value === row.getValue('status'))
       )
 
       if (!status) {
         return null
       }
 
+      const handleStatusChange = async (newStatus: string) => {
+        setStatus(statuses.find((status) => status.value === newStatus))
+        const result = await updateStatus(row.original.id, newStatus) // Update database
+        const { error } = JSON.parse(result)
+        const currentDateTime = new Date().toLocaleString()
+
+        if (error?.message) {
+          toast.error(error.message, {
+            description: `${currentDateTime}`,
+            action: {
+              label: 'close',
+              onClick: () => toast.dismiss(),
+            },
+          })
+        } else {
+          toast('task has benn updated', {
+            description: `${currentDateTime}`,
+            action: {
+              label: 'close',
+              onClick: () => toast.dismiss(),
+            },
+          })
+        }
+      }
+
       return (
-        <div className="flex w-[100px] items-center">
-          {status.icon && (
-            <status.icon className="w-4 h-4 mr-2 text-muted-foreground" />
-          )}
-          <span>{status.label}</span>
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="focus:ring-none ring-none">
+            <Badge variant={status.variant as BadgeProps['variant']}>
+              {status.icon && (
+                <status.icon
+                  className={`w-3.5 h-3.5 mr-2 ${
+                    status.value === 'in_progress' ? 'animate-spin' : ''
+                  }`}
+                />
+              )}
+              <span>{status.label}</span>
+            </Badge>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-48">
+            <DropdownMenuRadioGroup
+              value={status.value}
+              onValueChange={handleStatusChange}
+            >
+              {statuses.map((status) => (
+                <DropdownMenuRadioItem key={status.value} value={status.value}>
+                  <Badge variant={status.variant as BadgeProps['variant']}>
+                    {status.icon && (
+                      <status.icon className="w-3.5 h-3.5 mr-2" />
+                    )}
+                    <span>{status.label}</span>
+                  </Badge>
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       )
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },
   },
+
   {
     accessorKey: 'priority',
     header: ({ column }) => (
@@ -109,6 +198,42 @@ export const columns: ColumnDef<Task>[] = [
             <priority.icon className="w-4 h-4 mr-2 text-muted-foreground" />
           )}
           <span>{priority.label}</span>
+        </div>
+      )
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
+  },
+  {
+    accessorKey: 'project_member',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Member" />
+    ),
+    cell: ({ row }) => {
+      const member = project_members.find(
+        (member) => member.value === row.getValue('project_member')
+      )
+
+      if (!member) {
+        return null
+      }
+
+      return (
+        <div className="flex items-center">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Avatar className="w-8 h-8">
+                  <AvatarImage src={member.avatar} alt="@shadcn" />
+                  <AvatarFallback>DM</AvatarFallback>
+                </Avatar>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{member.label}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       )
     },

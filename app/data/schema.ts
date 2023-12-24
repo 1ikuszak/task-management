@@ -30,7 +30,7 @@ export const projectSchema = z.object({
 export type Project = z.infer<typeof projectSchema>
 
 export const taskSchema = z.object({
-  id: z.string().optional(),
+  id: z.string(),
   title: z.string(),
   project_member: z.string(),
   notes: z.string(),

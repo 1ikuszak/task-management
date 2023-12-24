@@ -18,6 +18,14 @@ export async function readTasks(project_id: string) {
 export async function createTask(task: Task) {
   const supabase = await createSupabaseClient()
   const result = await supabase.from('tasks').insert(task).single()
-  revalidatePath('tasks/[projectId]')
+  revalidatePath(`tasks/${task.project_id}`)
+  return JSON.stringify(result)
+}
+
+export async function updateStatus(id: string, status: string) {
+  const supabase = await createSupabaseClient()
+  const result = await supabase.from('tasks').update({ status }).eq('id', id)
+
+  // revalidatePath(`tasks/${task.project_id}`)
   return JSON.stringify(result)
 }

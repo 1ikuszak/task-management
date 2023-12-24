@@ -31,8 +31,9 @@ export default function RootLayout({
       >
         <main className="relative flex flex-col min-h-screen">
           <Navbar />
-          <div className="flex-grow flex-1">
-            {children} <Toaster position="bottom-right" richColors />
+          <div className="flex-1 flex-grow">
+            {children}
+            <Toaster position="bottom-right" richColors expand={true} />
           </div>
         </main>
       </body>
