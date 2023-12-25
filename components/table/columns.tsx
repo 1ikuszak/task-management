@@ -31,6 +31,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { updateStatus } from '@/app/tasks/actions'
 import { toast } from 'sonner'
+import { EditNotesForm } from '../tasks/EditNotesForm'
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -78,9 +79,16 @@ export const columns: ColumnDef<Task>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <span className="max-w-[100px] truncate font-medium text-xs">
-          {row.getValue('notes')}
-        </span>
+        <div className="flex items-center space-x-2 max-w-[300px]">
+          <EditNotesForm
+            task_id={row.original.id}
+            task_name={row.getValue('title')}
+            notes={row.getValue('notes')}
+          />
+          <span className="text-xs font-medium truncate">
+            {row.getValue('notes')}
+          </span>
+        </div>
       )
     },
   },

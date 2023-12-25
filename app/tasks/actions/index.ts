@@ -44,3 +44,16 @@ export async function deleteTask(project_id: string, id: string) {
   revalidatePath(`/tasks/${project_id}`)
   return JSON.stringify(result)
 }
+
+export async function updateNotes(id: string, notes: string) {
+  const supabase = await createSupabaseClient()
+  const result = await supabase
+    .from('tasks')
+    .update({
+      notes,
+    })
+    .eq('id', id)
+
+  revalidatePath('/tasks/[projectId]', 'page')
+  return JSON.stringify({ result })
+}
