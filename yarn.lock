@@ -2530,6 +2530,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns-tz@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "date-fns-tz@npm:2.0.0"
+  peerDependencies:
+    date-fns: ">=2.0.0"
+  checksum: 31cacb83c675ef8c2cf31d21c298ab6d74c5e975412dd804664d031ac0f2f03ed5bfb2a950fa15a321bbbcb90b833c300823fbceba0133680065a71894cc1170
+  languageName: node
+  linkType: hard
+
 "date-fns@npm:^3.0.0":
   version: 3.0.0
   resolution: "date-fns@npm:3.0.0"
@@ -5631,6 +5640,7 @@ __metadata:
     clsx: "npm:^2.0.0"
     cmdk: "npm:^0.2.0"
     date-fns: "npm:^3.0.0"
+    date-fns-tz: "npm:^2.0.0"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.0.4"
     eslint-config-prettier: "npm:^9.1.0"

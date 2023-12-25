@@ -2,6 +2,8 @@
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { Row } from '@tanstack/react-table'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -19,6 +21,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { taskSchema } from '@/app/data/schema'
+import { deleteTask } from '@/app/tasks/actions'
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -27,7 +30,23 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
+  const router = useRouter()
   const task = taskSchema.parse(row.original)
+
+  const redirectToUpdate = () => {
+    router.push(`/tasks/${task.project_id}/update/${task.id}`)
+  }
+
+  const handleDeleteTask = async () => {
+    const result = await deleteTask(task.project_id, task.id)
+    const { error } = JSON.parse(result)
+
+    if (error?.message) {
+      toast.error(error.message)
+    } else {
+      toast('task deleted successfully')
+    }
+  }
 
   return (
     <DropdownMenu>
@@ -41,15 +60,8 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem>Make a copy</DropdownMenuItem>
-        <DropdownMenuItem>Favorite</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-        </DropdownMenuSub>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={redirectToUpdate}>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleDeleteTask}>
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>

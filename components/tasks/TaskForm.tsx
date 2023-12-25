@@ -37,7 +37,7 @@ import { Textarea } from '../ui/textarea'
 import { useTransition } from 'react'
 import { createTask } from '@/app/tasks/actions'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
-import { Task } from '@/app/data/schema'
+import { CreationTask, Task } from '@/app/data/schema'
 import React from 'react'
 import { project_members } from '@/app/data/data'
 import { Switch } from '@/components/ui/switch'
@@ -97,7 +97,7 @@ export function TaskForm({ data, project_id }: TaskFromProps) {
 
   function onSubmit(data: TaskFormValues) {
     startTransition(async () => {
-      const taskData: Task = {
+      const taskData: CreationTask = {
         title: data.name,
         project_member: data.member,
         notes: data.notes,

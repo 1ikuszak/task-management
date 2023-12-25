@@ -114,9 +114,9 @@ export const columns: ColumnDef<Task>[] = [
         return null
       }
 
-      const handleStatusChange = async (newStatus: string) => {
+      const handleStatusChange = async (id: string, newStatus: string) => {
         setStatus(statuses.find((status) => status.value === newStatus))
-        const result = await updateStatus(row.original.id, newStatus) // Update database
+        const result = await updateStatus(id, newStatus) // Update database
         const { error } = JSON.parse(result)
         const currentDateTime = new Date().toLocaleString()
 
@@ -129,12 +129,8 @@ export const columns: ColumnDef<Task>[] = [
             },
           })
         } else {
-          toast('task has benn updated', {
+          toast.info('task status updated', {
             description: `${currentDateTime}`,
-            action: {
-              label: 'close',
-              onClick: () => toast.dismiss(),
-            },
           })
         }
       }
@@ -156,7 +152,13 @@ export const columns: ColumnDef<Task>[] = [
           <DropdownMenuContent className="w-48">
             <DropdownMenuRadioGroup
               value={status.value}
-              onValueChange={handleStatusChange}
+              onValueChange={(newStatus) => {
+                if (row.original.id && newStatus) {
+                  handleStatusChange(row.original.id, newStatus)
+                } else {
+                  toast.error('error occured')
+                }
+              }}
             >
               {statuses.map((status) => (
                 <DropdownMenuRadioItem key={status.value} value={status.value}>

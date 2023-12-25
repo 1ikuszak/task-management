@@ -34,11 +34,26 @@ export const taskSchema = z.object({
   title: z.string(),
   project_member: z.string(),
   notes: z.string(),
-  deadline: z.string(),
+  deadline: z.union([z.string(), z.date()]),
   blocked: z.boolean(),
   project_id: z.string(),
   status: z.string().optional(),
   priority: z.string().optional(),
+  blocking_task: z.string().optional().nullable(),
 })
 
 export type Task = z.infer<typeof taskSchema>
+
+export const creationTaskSchema = z.object({
+  title: z.string(),
+  project_member: z.string(),
+  notes: z.string(),
+  deadline: z.union([z.string(), z.date()]),
+  blocked: z.boolean(),
+  project_id: z.string(),
+  status: z.string().optional(),
+  priority: z.string().optional(),
+  blocking_task: z.string().optional().nullable(),
+})
+
+export type CreationTask = z.infer<typeof creationTaskSchema>
