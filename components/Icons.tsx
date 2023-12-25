@@ -24,6 +24,7 @@ import {
   Paintbrush2,
   Play,
   CalendarCheck2,
+  PencilIcon,
 } from 'lucide-react'
 
 export const Icons = {
@@ -51,4 +52,5 @@ export const Icons = {
   colors: Paintbrush2,
   start: Play,
   calender: CalendarCheck2,
+  notes: PencilIcon,
 }

@@ -39,10 +39,10 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { toast } from 'sonner'
-import { Textarea } from '@/components/ui/textarea'
 import { Icons } from '../Icons'
 import Link from 'next/link'
 import { Switch } from '../ui/switch'
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 
 const taskFormSchema = z.object({
   name: z
@@ -329,22 +329,34 @@ export function TaskUpdateForm({ data, task_id, project_id }: TaskFromProps) {
               )}
             />
           </div>
-          <FormField
-            control={form.control}
-            name="notes"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Notes</FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="resize-none h-[426px] w-full" // Adjusted height and width
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                <span className="flex items-center gap-2">
+                  <Icons.notes />
+                  Notes
+                </span>
+              </CardTitle>{' '}
+            </CardHeader>
+            <CardContent>
+              <FormField
+                control={form.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <textarea
+                        className="w-full border-none outline-none resize-none focus:outline-none"
+                        rows={16}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
         </div>
         <div className="flex justify-end w-full gap-2">
           <Button asChild variant="secondary" size="sm" className="gap-2">
