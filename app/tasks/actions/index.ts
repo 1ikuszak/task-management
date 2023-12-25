@@ -17,7 +17,19 @@ export async function readTasks(project_id: string) {
 
 export async function createTask(task: CreationTask) {
   const supabase = await createSupabaseClient()
-  const result = await supabase.from('tasks').insert(task).single()
+
+  const { count } = await supabase
+    .from('tasks')
+    .select('id', { count: 'exact' })
+    .eq('project_id', task.project_id)
+
+  const newIndex = count === null ? 0 : count
+  const taskWithIndex = {
+    ...task,
+    index: newIndex,
+  }
+  const result = await supabase.from('tasks').insert(taskWithIndex).single()
+
   revalidatePath(`tasks/${task.project_id}`)
   return JSON.stringify(result)
 }

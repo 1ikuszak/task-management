@@ -40,6 +40,7 @@ export const taskSchema = z.object({
   status: z.string().optional(),
   priority: z.string().optional(),
   blocking_task: z.string().optional().nullable(),
+  index: z.number().optional().nullable(),
 })
 
 export type Task = z.infer<typeof taskSchema>
@@ -54,6 +55,7 @@ export const creationTaskSchema = z.object({
   status: z.string().optional(),
   priority: z.string().optional(),
   blocking_task: z.string().optional().nullable(),
+  index: z.number().optional().nullable(),
 })
 
 export type CreationTask = z.infer<typeof creationTaskSchema>
