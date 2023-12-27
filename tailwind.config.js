@@ -65,8 +65,20 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
+        agGrid: ['var(--font-sans)', ...fontFamily.sans],
+      },
+      fontSize: {
+        agGrid: '12px',
       },
       colors: {
+        agGrid: {
+          foreground: 'hsl(var(--foreground))',
+          background: 'hsl(var(--background))',
+          headerForeground: 'hsl(var(--primary))',
+          headerBackground: 'hsl(var(--background))',
+          oddRowBackground: 'hsl(var(--background))',
+          headerColumnResizeHandle: 'hsl(var(--muted))',
+        },
         'theme-blue': {
           primary: '#2563eb',
           secondary: '#60a5fa',

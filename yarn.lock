@@ -1901,6 +1901,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ag-grid-community@npm:^31.0.1, ag-grid-community@npm:~31.0.1":
+  version: 31.0.1
+  resolution: "ag-grid-community@npm:31.0.1"
+  checksum: 2e86a67e550ad3d0b0f6ba30b44e9bf90f8a369bbf47aed9da5359ea19278e8595e0298dadfbc577072364d13012dd35f89d430eb5dd1ab6d5fedd3fab647547
+  languageName: node
+  linkType: hard
+
+"ag-grid-react@npm:^31.0.1":
+  version: 31.0.1
+  resolution: "ag-grid-react@npm:31.0.1"
+  dependencies:
+    ag-grid-community: "npm:~31.0.1"
+    prop-types: "npm:^15.8.1"
+  peerDependencies:
+    react: ^16.3.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.3.0 || ^17.0.0 || ^18.0.0
+  checksum: f18544ee82f6c0db3911830d9027418d9e2dbb19943b22e1665f997f60f322a0238dd3dbda5a420ba34e3822a675e2215003176819397cadfe75dda03ad9485d
+  languageName: node
+  linkType: hard
+
 "agent-base@npm:^7.0.2, agent-base@npm:^7.1.0":
   version: 7.1.0
   resolution: "agent-base@npm:7.1.0"
@@ -2322,6 +2342,13 @@ __metadata:
   dependencies:
     clsx: "npm:2.0.0"
   checksum: e11c57edf4bf50ef1c97bae41d68885afbaaedba26c48b7cc5dfb033390fed7012147e9532168d8c4f3497fce4dff15e20e6e60b8c9c9a4b0fe26b0e804513db
+  languageName: node
+  linkType: hard
+
+"classnames@npm:^2.3.3":
+  version: 2.3.3
+  resolution: "classnames@npm:2.3.3"
+  checksum: 4e945bed777a8103994c14675c9236c984a0b1365ae4a10b4c1b177c88f37d20038b4aadc88e1d138d7a88fd453064bf546ef80f1dd4f5ec128c7445992564de
   languageName: node
   linkType: hard
 
@@ -5601,6 +5628,7 @@ __metadata:
   dependencies:
     "@dnd-kit/core": "npm:^6.1.0"
     "@dnd-kit/sortable": "npm:^8.0.0"
+    "@dnd-kit/utilities": "npm:^3.2.2"
     "@hookform/resolvers": "npm:^3.3.2"
     "@radix-ui/react-avatar": "npm:^1.0.4"
     "@radix-ui/react-checkbox": "npm:^1.0.4"
@@ -5626,8 +5654,11 @@ __metadata:
     "@types/react-dom": "npm:^18"
     "@typescript-eslint/eslint-plugin": "npm:^6.14.0"
     "@typescript-eslint/parser": "npm:^6.0.0"
+    ag-grid-community: "npm:^31.0.1"
+    ag-grid-react: "npm:^31.0.1"
     autoprefixer: "npm:^10.0.1"
     class-variance-authority: "npm:^0.7.0"
+    classnames: "npm:^2.3.3"
     clsx: "npm:^2.0.0"
     cmdk: "npm:^0.2.0"
     date-fns: "npm:^3.0.6"

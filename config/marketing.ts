@@ -18,5 +18,9 @@ export const marketingConfig: MarketingConfig = {
       title: 'tasks',
       href: '/tasks',
     },
+    {
+      title: 'dnd',
+      href: '/dnd',
+    },
   ],
 }

@@ -1,17 +1,13 @@
 import { z } from 'zod'
 
-import { columns } from '@/components/table/columns'
-import { DataTable } from '@/components/table/data-table'
-import { taskSchema } from '@/app/data/schema'
+import { columns } from '@/components/ag_table/columns'
+import { DataTable } from '@/components/ag_table/data-table'
+import { Task, taskSchema } from '@/app/data/schema'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { TaskSheet } from '@/components/tasks/TaskFormSheet'
 import readUserSession from '@/lib/actions'
 import { redirect } from 'next/navigation'
 import { readTasks } from '../actions'
-
-async function getTasks() {
-  return []
-}
 
 export default async function TaskPage({
   params,
@@ -23,15 +19,15 @@ export default async function TaskPage({
     return redirect('/auth/login')
   }
   const response = await readTasks(params.projectId)
-  const tasks = z.array(taskSchema).parse(response.data)
-
+  const tasks: Task[] = z.array(taskSchema).parse(response.data)
+  console.log(tasks)
   return (
     <div className="my-10">
       <MaxWidthWrapper>
         <div className="mb-6">
           <TaskSheet tasks={tasks} project_id={params.projectId} />
         </div>
-        <DataTable data={tasks} columns={columns} />
+        <DataTable columnDefs={columns} rowData={tasks} />
       </MaxWidthWrapper>
     </div>
   )

@@ -1,0 +1,14 @@
+/* ag-grid-styles.css */
+.ag-theme-quartz {
+  /* AG-Grid Quartz theme styles */
+  --ag-foreground-color: theme('colors.agGrid.foreground');
+  --ag-background-color: theme('colors.agGrid.background');
+  --ag-header-foreground-color: theme('colors.agGrid.headerForeground');
+  --ag-header-background-color: theme('colors.agGrid.headerBackground');
+  --ag-odd-row-background-color: theme('colors.agGrid.oddRowBackground');
+  --ag-header-column-resize-handle-color: theme(
+    'colors.agGrid.headerColumnResizeHandle'
+  );
+  --ag-font-size: theme('fontSize.agGrid');
+  --ag-font-family: theme('fontFamily.agGrid');
+}
