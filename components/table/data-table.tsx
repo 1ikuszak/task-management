@@ -46,6 +46,7 @@ import { DataTablePagination } from '@/components/table/data-table-pagination'
 import { DataTableToolbar } from '@/components/table/data-table-toolbar'
 import { Task } from '@/app/data/schema'
 import { CSS } from '@dnd-kit/utilities'
+import { updateIndices } from '@/app/tasks/actions'
 
 interface DataTableProps<TData extends Task, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -128,12 +129,24 @@ export function DataTable<TData extends Task, TValue>({
       const newIndex = data.findIndex((item) => item.id === over.id)
 
       let newData = arrayMove(data, oldIndex, newIndex)
+
+      // Update only the indices for the affected range
+      const startIndex = Math.min(oldIndex, newIndex)
+      const endIndex = Math.max(oldIndex, newIndex)
+
+      for (let i = startIndex; i <= endIndex; i++) {
+        newData[i] = { ...newData[i], index: i }
+      }
+
       setData(newData)
+      updateIndices(newData.slice(startIndex, endIndex + 1)) // Update only the affected tasks
+      setSorting([])
     }
   }
 
   return (
     <DndContext
+      id="unique_id_so_no_error"
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}

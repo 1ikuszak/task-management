@@ -74,6 +74,21 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
+    accessorKey: 'index',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Index" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex space-x-2">
+          <span className="max-w-[500px] truncate font-medium">
+            {row.getValue('index')}
+          </span>
+        </div>
+      )
+    },
+  },
+  {
     accessorKey: 'notes',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Notes" />

@@ -21,7 +21,7 @@ export default async function TaskPage({
   }
   const response = await readTasks(params.projectId)
   const tasks = z.array(taskSchema).parse(response.data)
-  console.log(tasks)
+
   return (
     <div className="my-10">
       <MaxWidthWrapper>

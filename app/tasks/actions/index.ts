@@ -12,7 +12,7 @@ export async function readTasks(project_id: string) {
     .from('tasks')
     .select('*')
     .eq('project_id', project_id)
-    .order('created_at')
+    .order('index')
 }
 
 export async function createTask(task: CreationTask) {
@@ -67,5 +67,15 @@ export async function updateNotes(id: string, notes: string) {
     .eq('id', id)
 
   revalidatePath('/tasks/[projectId]', 'page')
-  return JSON.stringify({ result })
+  return JSON.stringify(result)
+}
+
+export async function updateIndices(tasks: Task[]) {
+  const supabase = await createSupabaseClient()
+  const updates = tasks.map((task, index) => ({
+    id: task.id,
+    index: index,
+  }))
+  const result = await supabase.from('tasks').upsert(updates)
+  return JSON.stringify(result)
 }
