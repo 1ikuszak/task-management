@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import { useState, useEffect, cloneElement } from 'react'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -62,7 +62,7 @@ function SortableItem({ id, children }: any) {
     transition,
   }
 
-  return React.cloneElement(children, {
+  return cloneElement(children, {
     ref: setNodeRef,
     ...attributes,
     ...listeners,
@@ -74,14 +74,16 @@ export function DataTable<TData extends Task, TValue>({
   columns,
   data: initialData,
 }: DataTableProps<TData, TValue>) {
-  const [data, setData] = React.useState(initialData)
-  const [rowSelection, setRowSelection] = React.useState({})
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [data, setData] = useState(initialData)
+  const [rowSelection, setRowSelection] = useState({})
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [sorting, setSorting] = useState<SortingState>([])
+
+  useEffect(() => {
+    // Update the data state whenever initialData changes
+    setData(initialData)
+  }, [initialData]) //
 
   const table = useReactTable({
     data,

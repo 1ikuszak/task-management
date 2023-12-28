@@ -102,6 +102,7 @@ export function TaskUpdateForm({ data, task_id, project_id }: TaskFromProps) {
         notes: data.notes,
         deadline: data.deadline,
         blocked: data.blocked,
+        blocking_task: data.blocking_task,
         project_id: project_id,
       }
       const result = await updateTask(taskData)

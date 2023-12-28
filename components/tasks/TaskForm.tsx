@@ -103,6 +103,7 @@ export function TaskForm({ data, project_id }: TaskFromProps) {
         notes: data.notes,
         deadline: data.deadline,
         blocked: data.blocked_status,
+        blocking_task: data.blocking_task,
         project_id: project_id,
       }
 
