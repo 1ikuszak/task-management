@@ -1,19 +1,50 @@
 'use client'
 
 import StatusDropdown from './components/StatusDropdown'
-import MemberAvatar from './components/MemberAvatar'
+import { Badge, BadgeProps } from '@/components/ui/badge'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { ICellRendererParams } from 'ag-grid-community'
+import { project_members, statuses } from '@/app/data/data'
 
-const statusCellRenderer = (params: any) => {
-  const currentStatusValue = params.data.status
-  const rowId = params.data.id
+const memberAvatarCellRenderer = (params: ICellRendererParams) => {
+  const member = project_members.find((member) => member.value === params.value)
+
+  if (!member) {
+    return null
+  }
+
   return (
-    <StatusDropdown currentStatusValue={currentStatusValue} rowId={rowId} />
+    <div className="flex items-center w-full h-full gap-2">
+      <Avatar className="w-6 h-6">
+        <AvatarImage src={member.avatar} alt="@shadcn" />
+        <AvatarFallback>DM</AvatarFallback>
+      </Avatar>
+      <span>{member.label}</span>
+    </div>
   )
 }
 
-const memberAvatarCellRenderer = (params: any) => {
-  const member = params.data.project_member
-  return <MemberAvatar project_member={member} />
+const statusCellRenderer = (params: ICellRendererParams) => {
+  const status = statuses.find((status) => status.value === params.value)
+
+  if (!status) {
+    return null
+  }
+
+  return (
+    <div className="flex items-center w-full h-full">
+      <Badge variant={status.variant as BadgeProps['variant']}>
+        {status.icon && (
+          <status.icon
+            className={`w-3.5 h-3.5 mr-2 ${
+              status.value === 'in_progress' ? 'animate-spin' : ''
+            }`}
+          />
+        )}
+        <span>{status.label}</span>
+      </Badge>
+    </div>
+  )
 }
 
 export const columns = [
@@ -21,39 +52,33 @@ export const columns = [
     headerName: 'Title',
     field: 'title',
     sortable: true,
-    filter: true,
     rowDrag: true,
   },
   {
     headerName: 'Member',
     field: 'project_member',
     sortable: true,
-    filter: true,
     cellRenderer: memberAvatarCellRenderer,
   },
   {
     headerName: 'Notes',
     field: 'notes',
     sortable: true,
-    filter: true,
   },
   {
     headerName: 'Deadline',
     field: 'deadline',
     sortable: true,
-    filter: true,
   },
   {
     headerName: 'Priority',
     field: 'priority',
     sortable: true,
-    filter: true,
   },
   {
     headerName: 'Status',
     field: 'status',
     sortable: true,
-    filter: true,
     cellRenderer: statusCellRenderer,
   },
 ]

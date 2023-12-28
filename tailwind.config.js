@@ -68,7 +68,7 @@ module.exports = {
         agGrid: ['var(--font-sans)', ...fontFamily.sans],
       },
       fontSize: {
-        agGrid: '12px',
+        agGrid: '14px',
       },
       colors: {
         agGrid: {

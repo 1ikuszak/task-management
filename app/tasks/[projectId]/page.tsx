@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
-import { columns } from '@/components/ag_table/columns'
-import { DataTable } from '@/components/ag_table/data-table'
+// import { columns } from '@/components/ag_table/columns'
+import { columns } from '@/components/table/columns'
+import { DataTable } from '@/components/table/data-table'
 import { Task, taskSchema } from '@/app/data/schema'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import { TaskSheet } from '@/components/tasks/TaskFormSheet'
@@ -19,7 +20,7 @@ export default async function TaskPage({
     return redirect('/auth/login')
   }
   const response = await readTasks(params.projectId)
-  const tasks: Task[] = z.array(taskSchema).parse(response.data)
+  const tasks = z.array(taskSchema).parse(response.data)
   console.log(tasks)
   return (
     <div className="my-10">
@@ -27,7 +28,8 @@ export default async function TaskPage({
         <div className="mb-6">
           <TaskSheet tasks={tasks} project_id={params.projectId} />
         </div>
-        <DataTable columnDefs={columns} rowData={tasks} />
+        <DataTable data={tasks} columns={columns} />
+        {/* <DataTable columnDefs={columns} rowData={tasks} /> */}
       </MaxWidthWrapper>
     </div>
   )
